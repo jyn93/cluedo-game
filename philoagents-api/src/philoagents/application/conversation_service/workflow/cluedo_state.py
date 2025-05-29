@@ -35,3 +35,29 @@ suspect_perspective={state["suspect_perspective"]},
 suspect_style={state["suspect_style"]}, 
 conversation={conversation})
         """
+
+
+class CrimeCaseState(MessagesState):
+    """State class for the LangGraph workflow. It keeps track of the information necessary to maintain a coherent
+    conversation between the Suspect and the user.
+
+    Attributes:
+        crime_scene (str): The description of the crime scene.
+        victim (str): The name of the victim.
+        suspects (list): A list of suspects in the case.
+        evidence (list): A list of evidence related to the case.
+    """
+    crime_scene: str
+    victim: str
+    suspects: list
+    culprits: list
+    inocent: list
+    evidence: list
+
+def crime_case_state_to_str(state: CrimeCaseState) -> str:
+    return f"""
+CrimeCaseState(crime_scene={state["crime_scene"]}, 
+victim={state["victim"]}, 
+suspects={state["suspects"]}, 
+evidence={state["evidence"]})
+    """

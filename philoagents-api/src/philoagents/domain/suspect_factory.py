@@ -14,7 +14,7 @@ SUSPECT_NAMES = {
     "plum": "Professor Plum",
 }
 
-SUSPECT_DESCRIPTIONS = {
+SUSPECT_PERSPECTIVES = {
     "scarlet": "A cunning femme fatale with a mysterious past.",
     "mustard": "A decorated military man with a short temper.",
     "white": "A devoted housekeeper who knows all the secrets.",
@@ -23,7 +23,7 @@ SUSPECT_DESCRIPTIONS = {
     "plum": "An absent-minded professor with a knack for trouble.",
 }
 
-SUSPECT_TRAITS = {
+SUSPECT_STYLES = {
     "scarlet": "charming and manipulative",
     "mustard": "brave and aggressive",
     "white": "observant and loyal",
@@ -54,17 +54,17 @@ class SuspectFactory:
         if id_lower not in SUSPECT_NAMES:
             raise SuspectNameNotFound(id_lower)
 
-        if id_lower not in SUSPECT_DESCRIPTIONS:
+        if id_lower not in SUSPECT_PERSPECTIVES:
             raise SuspectDescriptionNotFound(id_lower)
 
-        if id_lower not in SUSPECT_TRAITS:
+        if id_lower not in SUSPECT_STYLES:
             raise SuspectTraitNotFound(id_lower)
 
         return Suspect(
             id=id_lower,
             name=SUSPECT_NAMES[id_lower],
-            description=SUSPECT_DESCRIPTIONS[id_lower],
-            traits=SUSPECT_TRAITS[id_lower],
+            perspective=SUSPECT_PERSPECTIVES[id_lower],
+            style=SUSPECT_STYLES[id_lower],
         )
 
     @staticmethod

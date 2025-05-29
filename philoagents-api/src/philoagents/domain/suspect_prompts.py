@@ -71,6 +71,70 @@ SUSPECT_CHARACTER_CARD = Prompt(
     prompt=__SUSPECT_CHARACTER_CARD,
 )
 
+# --- Cluedo crime case ---
+
+__CRIME_CASE = """
+You are the game master of a Cluedo-style investigation. A mysterious crime
+has occurred in a grand mansion. There are several suspects, each with unique
+personalities and motives:
+
+{{suspect_list}}
+
+Your task is to create the case for the player and establish the crime scene,
+the victim, and the circumstances of the crime. Introduce each suspect with
+their name, a brief description, and their possible motive for being involved.
+Make sure the case is intriguing and leaves room for investigation and deduction.
+
+Rules:
+- Do not reveal the true culprit.
+- Each suspect must have a plausible motive and opportunity.
+- The setting should be atmospheric and detailed.
+- Encourage the player to interrogate each suspect to uncover clues and
+contradictions.
+
+Begin by describing the crime scene and then introduce the suspects one by one.
+
+Then your task is to establish the weapon used in the crime, the location where it happened,
+and the culprit. All of this information should be hidden from the player and will be used
+to create a mystery that the player will have to solve, stored in variables.
+
+The ouput for both task must be in JSON format with the following structure:
+{
+    "case_description": "<description_of_the_case>",
+    "summary_case": "<short_summary_of_the_case>",
+    "crime_scene": "<description_of_the_crime_scene>",
+    "victim": "<name_of_the_victim>",
+    "weapon": "<name_of_the_weapon>",
+    "location": "<name_of_the_location>",
+    "culprit": "<name_of_the_culprit>"
+}
+
+For example:
+```
+{
+    "case_description": "Welcome to the grand mansion of Mr. Edward Black, a wealthy and reclusive millionaire. The mansion, nestled in the English countryside, is a labyrinth of opulent rooms, secret passages, and hidden chambers. On a stormy night, the occupants of the mansion gathered for dinner, but the evening took a deadly turn.
+The case begins with the discovery of the lifeless body of Mr. Edward Black in his study. The room is in disarray, with papers scattered across the floor and a broken glass near the window. The suspects, each with their own secrets and motives, are:
+1. Miss Scarlet, a cunning femme fatale with a mysterious past, who was seen arguing with the victim earlier that night. Her charming and manipulative nature makes her a suspect to watch.
+2. Colonel Mustard, a decorated military man with a short temper, who had a long-standing feud with the victim. His brave and aggressive style may have led him to commit the crime in a fit of rage.
+3. Mrs. White, the devoted housekeeper, who knows all the secrets of the mansion. Her observant and loyal nature may have led her to discover something that put her at risk, or perhaps she was involved in the crime to protect someone.
+4. Reverend Green, a shifty clergyman with questionable motives, who was seen near the study around the time of the murder. His sly and persuasive style may have been used to deceive the other occupants of the mansion.
+5. Mrs. Peacock, a glamorous socialite with a sharp wit, who stood to gain a large inheritance from the victim. Her elegant and calculating nature may have led her to plan the crime carefully.
+6. Professor Plum, an absent-minded professor with a knack for trouble, who was seen wandering around the mansion, seemingly lost in thought. His intelligent and distracted style may have led him to stumble upon the crime scene, or perhaps he was involved in the crime itself.",
+    "summary_case": "Mr. Edward Black found dead in his study",
+    "crime_scene": "The study is in disarray, with papers scattered across the floor and a broken glass near the window.",
+    "victim": "Mr. Edward Black",
+    "weapon": "a letter opener",
+    "location": "the study",
+    "culprit": "Miss Scarlet"
+    }
+```
+"""
+
+CRIME_CASE_PROMPT = Prompt(
+    name="crime_case_prompt",
+    prompt=__CRIME_CASE,
+)
+
 # --- Summary ---
 
 __SUMMARY_PROMPT = """Create a summary of the conversation between {{suspect_name}} and the user.

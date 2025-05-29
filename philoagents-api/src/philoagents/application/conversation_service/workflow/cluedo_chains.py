@@ -8,7 +8,10 @@ from philoagents.domain.suspect_prompts import (
     EXTEND_SUMMARY_PROMPT,
     SUSPECT_CHARACTER_CARD,
     SUMMARY_PROMPT,
+    CRIME_CASE_PROMPT
 )
+from philoagents.domain.crime_case import CrimeCase
+
 
 
 def get_chat_model(temperature: float = 0.7, model_name: str = settings.GROQ_LLM_MODEL) -> ChatGroq:
@@ -33,6 +36,19 @@ def get_suspect_response_chain():
     )
 
     return prompt | model
+
+
+def get_crime_case_chain():
+    model = get_chat_model(model_name=settings.GROQ_LLM_MODEL)
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", CRIME_CASE_PROMPT.prompt),
+            MessagesPlaceholder(variable_name="suspect_list"),
+        ],
+        template_format="jinja2",
+    )
+
+    return prompt | model.with_structured_output(CrimeCase)
 
 
 def get_conversation_summary_chain(summary: str = ""):

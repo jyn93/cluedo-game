@@ -1,3 +1,4 @@
+import json
 from langchain_core.messages import RemoveMessage
 from langchain_core.runnables import RunnableConfig
 from langgraph.prebuilt import ToolNode
@@ -5,13 +6,35 @@ from langgraph.prebuilt import ToolNode
 from philoagents.application.conversation_service.workflow.cluedo_chains import (
     # get_context_summary_chain,
     # get_conversation_summary_chain,
+    get_crime_case_chain,
     get_suspect_response_chain,
 )
-from philoagents.application.conversation_service.workflow.cluedo_state import SuspectState
+from philoagents.application.conversation_service.workflow.cluedo_state import (
+    CrimeCaseState,
+    SuspectState
+)
 from philoagents.application.conversation_service.workflow.tools import tools
 from philoagents.config import settings
+from philoagents.domain.crime_case import CrimeCase
+from philoagents.domain.suspect_factory import SuspectFactory
 
 retriever_node = ToolNode(tools)
+
+
+async def crime_case_node(state: CrimeCaseState, config: RunnableConfig):
+    suspects = [SuspectFactory.get_suspect(sid) for sid in SuspectFactory.get_available_suspects()]
+    suspect_list = "\n".join(
+        f"- {suspect}" for suspect in suspects
+    )
+    crime_case_chain = get_crime_case_chain()
+
+    crime_case = await crime_case_chain.ainvoke(
+        {
+            "suspect_list": suspect_list,
+        },
+        config,
+    )
+    return crime_case
 
 
 async def conversation_node(state: SuspectState, config: RunnableConfig):
