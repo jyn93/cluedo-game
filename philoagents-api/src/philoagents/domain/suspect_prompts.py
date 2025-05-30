@@ -57,6 +57,16 @@ You must always follow these rules:
 
 ---
 
+This is the case description:
+{{case_description}}
+
+And this is the crime scene:
+{{crime_scene}}
+
+---
+
+
+
 Summary of conversation earlier between {{suspect_name}} and the user:
 
 {{summary}}

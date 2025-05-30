@@ -9,6 +9,7 @@ from langgraph.graph import END, START, StateGraph
 from philoagents.application.conversation_service.workflow.cluedo_nodes import (
     conversation_node,
     crime_case_node,
+    select_suspect_node,
     # summarize_conversation_node,
     # retriever_node,
     # summarize_context_node,
@@ -23,6 +24,7 @@ def create_workflow_graph():
 
     # Add all nodes
     graph_builder.add_node("crime_case_node", crime_case_node)
+    graph_builder.add_node("select_suspect_node", select_suspect_node)
     graph_builder.add_node("conversation_node", conversation_node)
     # graph_builder.add_node("retrieve_philosopher_context", retriever_node)
     # graph_builder.add_node("summarize_conversation_node", summarize_conversation_node)
@@ -31,7 +33,8 @@ def create_workflow_graph():
     
     # Define the flow
     graph_builder.add_edge(START, "crime_case_node")
-    graph_builder.add_edge("crime_case_node", "conversation_node")
+    graph_builder.add_edge("crime_case_node", "select_suspect_node")
+    graph_builder.add_edge("select_suspect_node", "conversation_node")
     # graph_builder.add_conditional_edges(
     #     "conversation_node",
     #     tools_condition,
