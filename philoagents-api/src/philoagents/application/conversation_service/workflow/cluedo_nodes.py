@@ -106,8 +106,7 @@ def get_question_node(state: SuspectState):
     )
     return state
 
-def get_decision_continue_conversation_node(state: SuspectState) -> Literal["get_decision_select_or_exit_node",
-                                                                            "get_decision_continue_conversation_node"]:
+def get_decision_continue_conversation_node(state: SuspectState) -> Literal["yes", "no"]:
     """
     Get the decision from the user to continue the conversation or not.
     This function prompts the user to decide whether they want to continue the conversation with the suspect.
@@ -117,14 +116,12 @@ def get_decision_continue_conversation_node(state: SuspectState) -> Literal["get
         SuspectState: The updated state with the user's decision.
     """
     decision = input(f"Do you want to continue the conversation with the suspect {state['suspect_name']}? (yes/no): ").strip().lower()
-    if not decision or decision == 'yes':
-        return "get_question_node"
     if decision not in ["yes", "no"]:
         raise ValueError("Invalid decision. Please enter 'yes' or 'no'.")
-    if decision == "no":
-        return "get_decision_select_or_exit_node"
-    
-def get_decision_select_or_exit_node(state: SuspectState) -> Literal["select_suspect_node", "END"]:
+    state["decision_conversation"] = decision
+    return state
+
+def get_decision_select_or_exit_node(state: SuspectState) -> Literal["select", "exit"]:
     """
     Get the decision from the user to select another suspect or exit the conversation.
     This function prompts the user to decide whether they want to select another suspect or exit the conversation.
@@ -137,11 +134,10 @@ def get_decision_select_or_exit_node(state: SuspectState) -> Literal["select_sus
         ValueError: If the user input is invalid.
     """
     decision = input("Do you want to select another suspect or exit? (select/exit): ").strip().lower()
-    if decision == "select":
-        return "select_suspect_node"
-    if decision == "exit":
-        return "END"
-    raise ValueError("Invalid decision. Please enter 'select' or 'exit'.")
+    if decision not in ["select", "exit"]:
+        raise ValueError("Invalid decision. Please enter 'select' or 'exit'.")
+    state["decision_exit"] = decision
+    return state
 
 async def conversation_node(state: SuspectState, config: RunnableConfig):
     summary = state.get("summary", "")
